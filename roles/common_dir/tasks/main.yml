@@ -1,0 +1,26 @@
+---
+# Common Tasks
+
+- name: create deploy directories
+  file: path={{ item }} state=directory mode=0755
+  with_items:
+    - "{{ deploy_dir }}/scripts"
+    - "{{ deploy_dir }}/conf"
+    - "{{ backup_dir }}"
+
+- name: create status directory
+  file: path={{ item }} state=directory mode=0755
+  with_items:
+    - "{{ status_dir }}"
+
+- name: create deploy binary directory
+  file: path={{ item }} state=directory mode=0755
+  with_items:
+    - "{{ deploy_dir }}/bin"
+  when: deployment_method != 'docker'
+
+- name: create docker image directory
+  file: path={{ item }} state=directory mode=0755
+  with_items:
+    - "{{ images_dir }}"
+  when: deployment_method == 'docker'
